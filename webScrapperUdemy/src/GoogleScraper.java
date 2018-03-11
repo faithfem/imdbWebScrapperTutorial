@@ -2,6 +2,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 
 public class GoogleScraper {
@@ -22,6 +23,7 @@ public class GoogleScraper {
 
     final Document page = Jsoup.connect("https://www.google.com/search?q=apple" + URLEncoder.encode(query, "UTF-8")).userAgent(USER_AGENT).get();
 
+    final PrintWriter out = new PrintWriter("results.txt");
         //System.out.println(page.outerHtml());
 
     //PART 2: NOW GET THE TOP 10 GOOGLE RESULTS BY RETURNING ELEMENTS IN h3.r.a
@@ -29,11 +31,13 @@ public class GoogleScraper {
     for(Element searchResult: page.select("h3.r.a")){
 
         final String title = searchResult.text();
-        //final String url = searchResult.attr("href");
+        final String url = searchResult.attr("href");
 
-        System.out.println(title + " -> " );
+        //System.out.println(title + " -> " );
+        out.write(title + " -> " + url + "\n");
     }
 
+    out.close();
 
 
     }
